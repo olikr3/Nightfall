@@ -3,6 +3,7 @@
 
 class Game {
 private:
+    EventManager manager;
     std::vector<std::unique_ptr<provinces>> provinces;
     std::vector<std::unqie_ptr<factions>> factions;
     int currentYear;

@@ -2,9 +2,9 @@ class Province {
 private:
     int id;
     std::string name;
-    std::vector<int> nborIds;
+    std::vector<int> neighborIds;
     float population;
-    int ownerId; // faction that owns province
+    int ownerId;
 
 public:
     Province(int id, const std::string& name, float population)

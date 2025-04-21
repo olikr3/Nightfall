@@ -1,22 +1,66 @@
-#pragma once
+#include <vector>
 #include <string>
 #include <memory>
 
-class Event {
+class GameEvent {
 public:
-    virtual ~Event() = default;
+    virtual void ~Event() = default;
     virtual void execute() = 0;
-    virtual std::string getDescription() const = 0;
+    virtual std::string get_description const = 0;
 };
 
-// place holder for now
-class Province_Event : public Event {
+class WarDeclarationEvent : public GameEvent {
 private:
-    int province_id;
-    std::string description;
+    int attacker_faction_id;
+    int defender_faction_id;
+    std::string casus_belli;
 
 public:
-    Province_Event(int province_id, const std::string& desc);
+    WarDeclarationEvent(int attacker, int defender, const std::string& reason);
     void execute() override;
     std::string get_description() const override;
 };
+
+class BattleEvent : public GameEvent {
+private:
+    int attacker_faction_id;
+    int defender_faction_id;
+    int province_id; // location of battle
+    int attacker_strength;
+    int defender_strength;
+
+public:
+    BattleEvent(int attacker, int defender, int province, 
+                int attStr, int defStr);
+    void execute() override;
+    std::string get_description() const override;
+};
+
+class SiegeEvent : public GameEvent {
+private:
+    int besieger_faction_id;
+    int province_id;
+    int siege_days;
+
+public:
+    SiegeEvent(int besieger, int province, int days);
+    void execute() override;
+    std::string get_description() const override;
+};
+
+class PeaceTreatyEvent : public GameEvent {
+private:
+    int winner_faction_id;
+    int loser_faction_id;
+    std::vector<int> exchanged_provinces;
+    float reparations;
+
+public:
+    PeaceTreatyEvent(int winner, int loser, 
+                    const std::vector<int>& provinces,
+                    float gold_reparations);
+    void execute() override;
+    std::string get_description() const override;
+};
+
+
